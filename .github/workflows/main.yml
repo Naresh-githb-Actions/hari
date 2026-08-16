@@ -1,4 +1,4 @@
-name: Check S3
+name: Check S3-ci
 
 on:
   push:
