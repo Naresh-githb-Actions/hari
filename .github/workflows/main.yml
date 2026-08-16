@@ -24,6 +24,21 @@ jobs:
 
       - name: Check AWS identity
         run: aws sts get-caller-identity
+      - name: Get OIDC claims
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const token = await core.getIDToken('sts.amazonaws.com');
 
+            const payload = JSON.parse(
+              Buffer.from(token.split('.')[1], 'base64url').toString()
+            );
+
+            console.log("Repository:", payload.repository);
+            console.log("Subject:", payload.sub);
+            console.log("Audience:", payload.aud);
+            console.log("Repository ID:", payload.repository_id);
+            console.log("Owner ID:", payload.repository_owner_id);
+        
       - name: List S3 buckets
         run: aws s3 ls
