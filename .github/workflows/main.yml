@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
   workflow_dispatch:
 
 permissions:
@@ -16,14 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
-          aws-region: us-east-1
 
-      - name: Check AWS identity
-        run: aws sts get-caller-identity
       - name: Get OIDC claims
         uses: actions/github-script@v7
         with:
@@ -39,6 +31,15 @@ jobs:
             console.log("Audience:", payload.aud);
             console.log("Repository ID:", payload.repository_id);
             console.log("Owner ID:", payload.repository_owner_id);
-        
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: us-east-1
+
+      - name: Check AWS credentials
+        run: aws sts get-caller-identity
+
       - name: List S3 buckets
         run: aws s3 ls
