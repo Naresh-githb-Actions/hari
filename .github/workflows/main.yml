@@ -1,4 +1,4 @@
-name: naresh
+name: naresh-ci
 
 on:
   push:
