@@ -1,9 +1,10 @@
-name: Check S3-ci
+name: Check S3
 
 on:
   push:
     branches:
       - main
+
   workflow_dispatch:
 
 permissions:
@@ -21,7 +22,7 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: us-east-1
 
-      - name: Check AWS credentials
+      - name: Check AWS identity
         run: aws sts get-caller-identity
 
       - name: List S3 buckets
